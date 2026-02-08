@@ -1,129 +1,46 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Sparkles, MessageSquare, Mail, Download, Lightbulb, Route, Megaphone, FileText } from "lucide-react"
-import type { AIStrategy, LeadResult } from "../dashboard"
+import React from 'react';
+import { Sparkles, Send, Target, Zap } from 'lucide-react';
 
-interface AIStrategyCardProps {
-  strategy: AIStrategy
-  results: LeadResult[]
-}
-
-export default function AIStrategyCard({ strategy, results }: AIStrategyCardProps) {
-  const downloadCSV = () => {
-    const headers = ["Company Name", "Website", "LinkedIn Profile", "CEO/Manager", "Email", "Matching Signal"]
-    const csvContent = [
-      headers.join(","),
-      ...results.map((r) =>
-        [r.companyName, r.website, r.linkedinProfile, r.ceoName, r.email, `"${r.matchingSignal}"`].join(","),
-      ),
-    ].join("\n")
-
-    const blob = new Blob([csvContent], { type: "text/csv" })
-    const url = window.URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = "ld-leads-export.csv"
-    a.click()
-    window.URL.revokeObjectURL(url)
-  }
-
-  const downloadPDF = () => {
-    // Simulate PDF download
-    alert("Strategic PDF generation would be implemented with a PDF library like jspdf")
-  }
+export default function AIStrategyCard({ strategy }: any) {
+  if (!strategy) return null;
 
   return (
-    <div className="gradient-border rounded-2xl p-6 glow-mixed">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/30 to-indigo-500/30 flex items-center justify-center">
-            <Sparkles className="w-5 h-5 text-emerald-400" />
-          </div>
-          <div>
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider">AI Strategic Analysis</h2>
-            <p className="text-xs font-mono text-muted-foreground">Personalized outreach intelligence</p>
-          </div>
+    <div className="bg-gradient-to-br from-[#00ff88]/10 via-black to-black border border-[#00ff88]/20 rounded-[2.5rem] p-8 shadow-2xl animate-in fade-in zoom-in duration-500">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="p-2 bg-[#00ff88]/20 rounded-lg">
+          <Sparkles className="w-5 h-5 text-[#00ff88]" />
         </div>
-
-        {/* Export Buttons */}
-        <div className="flex items-center gap-3">
-          <Button
-            onClick={downloadCSV}
-            className="h-10 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 font-mono text-xs uppercase tracking-wider rounded-xl border border-emerald-500/30 transition-all duration-300 hover:shadow-[0_0_30px_rgba(52,211,153,0.2)]"
-          >
-            <Download className="w-4 h-4 mr-2" />
-            Download CSV
-          </Button>
-          <Button
-            onClick={downloadPDF}
-            className="h-10 bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-400 font-mono text-xs uppercase tracking-wider rounded-xl border border-indigo-500/30 transition-all duration-300 hover:shadow-[0_0_30px_rgba(129,140,248,0.2)]"
-          >
-            <FileText className="w-4 h-4 mr-2" />
-            Download Strategic PDF
-          </Button>
-        </div>
+        <h2 className="text-xl font-black tracking-tighter uppercase italic text-white">AI Intelligence</h2>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* The Hook */}
-        <div className="gradient-border rounded-xl p-5">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center">
-              <Lightbulb className="w-4 h-4 text-indigo-400" />
-            </div>
-            <h3 className="text-xs font-bold text-white uppercase tracking-wider">The Hook</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="space-y-3 p-4 rounded-2xl bg-white/[0.03] border border-white/5">
+          <div className="flex items-center gap-2 text-[10px] font-black text-[#00ff88] uppercase tracking-widest">
+            <Zap className="w-3 h-3" /> The Hook
           </div>
-          <p className="text-sm text-muted-foreground leading-relaxed italic">
-            {'"'}
-            {strategy.hook}
-            {'"'}
+          <p className="text-sm text-gray-300 italic">"{strategy.hook}"</p>
+        </div>
+
+        <div className="space-y-3 p-4 rounded-2xl bg-white/[0.03] border border-white/5">
+          <div className="flex items-center gap-2 text-[10px] font-black text-[#00ff88] uppercase tracking-widest">
+            <Target className="w-3 h-3" /> Strategy
+          </div>
+          <p className="text-sm text-gray-300 uppercase leading-relaxed text-[10px] font-mono">
+            {strategy.approachStrategy}
           </p>
         </div>
 
-        {/* Approach Strategy */}
-        <div className="gradient-border rounded-xl p-5">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-              <Route className="w-4 h-4 text-emerald-400" />
-            </div>
-            <h3 className="text-xs font-bold text-white uppercase tracking-wider">Approach Strategy</h3>
+        <div className="space-y-3 p-4 rounded-2xl bg-white/[0.03] border border-white/5">
+          <div className="flex items-center gap-2 text-[10px] font-black text-[#00ff88] uppercase tracking-widest">
+            <Send className="w-3 h-3" /> Channel
           </div>
-          <p className="text-sm text-muted-foreground leading-relaxed">{strategy.approachStrategy}</p>
-        </div>
-
-        {/* Best Channel */}
-        <div className="gradient-border rounded-xl p-5">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500/20 to-indigo-500/20 flex items-center justify-center">
-              <Megaphone className="w-4 h-4 text-emerald-400" />
-            </div>
-            <h3 className="text-xs font-bold text-white uppercase tracking-wider">Best Channel</h3>
+          <div className="inline-block px-3 py-1 bg-[#00ff88] text-black text-[10px] font-black rounded-full uppercase">
+            {strategy.bestChannel}
           </div>
-          <div className="flex items-center gap-3 mb-3">
-            <Badge
-              className={`text-sm font-mono py-2 px-4 ${
-                strategy.bestChannel === "LinkedIn Message"
-                  ? "bg-indigo-500/20 text-indigo-400 border-indigo-500/30 hover:bg-indigo-500/30"
-                  : "bg-emerald-500/20 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/30"
-              }`}
-            >
-              {strategy.bestChannel === "LinkedIn Message" ? (
-                <MessageSquare className="w-4 h-4 mr-2" />
-              ) : (
-                <Mail className="w-4 h-4 mr-2" />
-              )}
-              {strategy.bestChannel}
-            </Badge>
-          </div>
-          <p className="text-xs text-muted-foreground/60 font-mono">
-            Based on target profile analysis and historical response rates.
-          </p>
         </div>
       </div>
     </div>
-  )
+  );
 }
-
-
